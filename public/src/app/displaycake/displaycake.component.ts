@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from '../http.service';
 
 @Component({
@@ -7,17 +7,22 @@ import { HttpService } from '../http.service';
   styleUrls: ['./displaycake.component.css']
 })
 export class DisplaycakeComponent implements OnInit {
-  allCakes: any;
+  @Input() cakeToShow: any;
+  sum: number = 0;
+  counter: number = 0;
+  average: number;
   constructor(private _httpService: HttpService) { }
 
   ngOnInit() {
-    this.getAllCakes();
+    this.avgRating();
+  }
+  avgRating() {
+    for (let i of this.cakeToShow.reviews) {
+      this.sum += i['rate'];
+      this.counter ++;
+    }
+    this.average = this.sum / this.counter;
+    console.log(this.cakeToShow);
   }
 
-  getAllCakes() {
-    this._httpService.getCakes().subscribe( cakes => {
-      console.log('got all the cakes!: ', cakes);
-      this.allCakes = cakes;
-    });
-  }
 }

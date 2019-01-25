@@ -17,11 +17,11 @@ mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 const ReviewSchema = new mongoose.Schema({
     rate : { type: Number },
-    cmt : {type: String }
+    cmt : { type: String }
 })
 const CakeSchema = new mongoose.Schema({
     name: { type: String },
-    imgurl: { type: String},
+    imgurl: { type: String },
     reviews : [ReviewSchema]
 }, { timestamps: true })
 var Cake = mongoose.model("Cake", CakeSchema);
@@ -73,63 +73,45 @@ app.post('/review/:id', function (req, res) {
         }
     })  
 })
+// find One
+app.get('/cake/:id', function (req, res){
+    Cake.findById({_id: req.params.id}, function(err, data){
+        if(err){
+            res.json({err:err});
+        }
+        else {
+            console.log('Found ONE');
+            res.json({data: data});
+        }
+    })
 
-// app.post('/review/:id', function (req, res) {
-//     var rviewInstance = new Review ( req.body );
-//     console.log(req.body, "******************************req");
-//     rviewInstance.save(function (err){
-//         if (err) {
-//             res.json({status: "error creating document in DB", err: err});
-//         }
-//         else {
-//             res.json({status: "Success adding document to DB", data: rviewInstance});
-//             Cake.findOneAndUpdate(req.params.id, {$push: {reviews:{rate: rviewInstance.rate, cmt: rviewInstance.cmt}}}, function(err, data){
-//                 if(err){
-//                     console.log("document not found in db");
-//                     res.json({err: err});
-//                 }
-//                 else{
-//                     console.log("successfully updated");
-//                 }
-//             })
-//         }
-//     })
+})
+// update worked
+app.put('/update', function (req, res){
+    console.log(req.body);
+    Cake.findByIdAndUpdate(req.body._id, {$set: {name: req.body.name, imgurl: req.body.imgurl}}, function(err, data){
+        if(err){
+            console.log("document not found in db");
+            res.json({err: err});
+        }
+        else{
+            console.log("successfully updated");
+            console.log(data);
+            res.json({data:data})
+        }
+    })
+})
+// delete  ...
+app.delete('/cake/:id', function (req, res){
+    Cake.findOneAndDelete({_id:req.params.id}, function (err){
+        if(err){
+            res.json({err:err});
+        } else {
+            res.json({status: "Success deleting the object"});
+        }
+    })
+})
 
-// })
-
-// app.get('/gold/:id', function (req, res) {
-//     Ninja.findById(req.params.id, function (err, dbNinjas) {
-//         if (err) {
-//             console.log('Something has gone wrong');
-//             res.redirect('/show/:id')
-//         }
-//         else {
-//             res.json({ message: "Success", Ninja: dbNinjas });
-//         }
-//     })
-// })
-// app.put('/task/:id', function(req, res){
-//     Ninja.update({ _id: req.params.id }, {name: req.body.name, hobby: req.body.hobby}, function (err, Ninjas){
-//         if (err) {
-//             console.log('Something has gone wrong');
-//             res.json({ message: "Error", err: err })
-//         }
-//         else {
-//             res.json({ message: "Success", Ninja: Ninjas });
-//         }
-//     })
-// })
-// app.delete('/task/:id', function (req, res) {
-//     Ninja.remove({ _id: req.params.id }, function (err, dbNinjas) {
-//         if (err) {
-//             console.log('Something has gone wrong');
-//             res.json({ message: "Error", err: err })
-//         }
-//         else {
-//             res.json({ message: "Success", Ninja: dbNinjas })
-//         }
-//     })
-// })
 
 app.listen(8000, function () {
     console.log("listening on port 8000");
