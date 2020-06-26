@@ -19,5 +19,13 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "description": "mongoose assignment"
+  "description": "mongoose assignment",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yingchenlee/rate_my_cake.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yingchenlee/rate_my_cake/issues"
+  },
+  "homepage": "https://github.com/yingchenlee/rate_my_cake#readme"
 }

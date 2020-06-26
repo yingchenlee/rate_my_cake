@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   addNewcake() {
     this._httpService.addCake(this.newCake).subscribe(data => {
       console.log('added a cake!', data);
-      this.newCake = {baker_name: '', img_url: '' }; // set the form back to blank instead of keeping the values there
+      this.newCake = {name: '', imgurl: '' }; // set the form back to blank instead of keeping the values there
       this.getAllCakes();
     });
   }
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     this.updateCakeForm = true; // this will show the form
     this.theCake = cake_object ; // this will pre-populate the form with the existing information
   }
-  updateOneCake(cake_object) {
+  updateOneCake(cake_object) {  // update one cake
     this._httpService.updateCake(cake_object).subscribe( data => {
       console.log('updated a cake!');
       console.log(cake_object);
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
       this.getAllCakes();
     });
   }
-  addReview(formData, id) {
+  addReview(formData, id) { // update
     var formObject = {
       rate : formData.value.review.rate,
       cmt : formData.value.review.cmt,

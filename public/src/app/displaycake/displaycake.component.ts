@@ -8,8 +8,8 @@ import { HttpService } from '../http.service';
 })
 export class DisplaycakeComponent implements OnInit {
   @Input() cakeToShow: any;
-  sum: number = 0;
-  counter: number = 0;
+  sum = 0;
+  counter = 0;
   average: number;
   constructor(private _httpService: HttpService) { }
 
